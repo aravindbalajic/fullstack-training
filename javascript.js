@@ -65,7 +65,9 @@ console.log(typeof "JavaScript");  */
 
 obj={
     "movie":"Pushpa 2",
-    "Box office":"1000cr"
+    "Box office":"1000cr",
+    "Language":"Telugu",
+    "State":"Andhra"
 }
 console.log(obj)
 console.log(obj.movie)
