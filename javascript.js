@@ -1,4 +1,4 @@
-// 1. Assignment Operators
+/*// 1. Assignment Operators
 let a = 10;
 console.log(a);  
 
@@ -60,4 +60,13 @@ console.log(greeting);
 let value = 42;
 console.log(typeof value);  
 
-console.log(typeof "JavaScript");  
+console.log(typeof "JavaScript");  */
+
+
+obj={
+    "movie":"Pushpa 2",
+    "Box office":"1000cr"
+}
+console.log(obj)
+console.log(obj.movie)
+
