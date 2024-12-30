@@ -1,0 +1,31 @@
+ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: rgb(13, 126, 231);
+    color: rgb(178, 233, 29);
+    cursor: pointer;
+    list-style: none;
+    padding:10px;
+    margin:0px;
+    text-decoration: none;
+
+
+}
+li:hover{
+    background-color: white;
+    color: black;
+    border-radius: 2px;
+    transition: background-color 1s, color 1s;
+}
+
+Link{
+    color: white;
+}
+Link:hover{
+    color:black;
+}
+
+li{
+    padding: 10px;
+}
