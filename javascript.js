@@ -63,7 +63,7 @@ console.log(typeof value);
 console.log(typeof "JavaScript");  */
 
 
-obj={
+/*obj={
     "movie":"Pushpa 2",
     "Box office":"1000cr",
     "Language":"Telugu",
@@ -71,3 +71,6 @@ obj={
 }
 console.log(obj)
 console.log(obj.movie)
+*/
+
+//console.log(a)
