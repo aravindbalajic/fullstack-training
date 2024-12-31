@@ -1,6 +1,7 @@
 import React from 'react'
 import './App.css'
 import Home from './Components/Home'
+import Counter from './Components/Counter'
 import NavBar from './Components/NavBar'
 import {BrowserRouter,Routes,Route} from 'react-router-dom';
 import About from './Components/About'
@@ -14,6 +15,7 @@ function App() {
         <Routes>
             <Route path='/' element={<Home />}></Route>
             <Route path='/about' element={<About />}></Route>
+            <Route path='/counter' element={<Counter />}></Route>
         </Routes>
       </BrowserRouter>
       
