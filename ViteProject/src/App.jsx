@@ -6,6 +6,8 @@ import NavBar from './Components/NavBar'
 import {BrowserRouter,Routes,Route} from 'react-router-dom';
 import About from './Components/About'
 import { Link } from 'react-router-dom';
+import UseRef from './Components/UseRef.jsx'
+import UseContext from './Components/USeContext.jsx'
 function App() {
   return (
     <div>
@@ -16,6 +18,9 @@ function App() {
             <Route path='/' element={<Home />}></Route>
             <Route path='/about' element={<About />}></Route>
             <Route path='/counter' element={<Counter />}></Route>
+            <Route path='/use-ref' element={<UseRef />}></Route>
+            <Route path='/use-context' element={<UseContext />}></Route>
+
         </Routes>
       </BrowserRouter>
       
