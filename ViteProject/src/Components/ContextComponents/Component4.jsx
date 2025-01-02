@@ -1,10 +1,11 @@
-//Component 1 is useContext.jsx
-
-var Component4=()=>{
-    return(
-        <section>
-            <h2>In Component 4</h2>
-        </section>
-    )
-}
-export default Component4;
+import StudentResults from "./StudentResults";
+var Component4=()=>
+    {
+        return(
+            <section>
+                <h3>Component4</h3>
+                <StudentResults />
+            </section>
+        );
+    }
+    export default Component4;

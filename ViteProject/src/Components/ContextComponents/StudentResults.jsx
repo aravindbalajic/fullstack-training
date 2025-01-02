@@ -1,10 +1,15 @@
-//Component 1 is useContext.jsx
+import { useContext } from "react";
+import { ThemeProvider } from "../UseContext";
 
-var StudentResults=()=>{
+var StudentResults=()=>
+{
+    const result=useContext(ThemeProvider);
     return(
         <section>
-            <h2>Your Result</h2>
+            <h3>Your result is {result.sgpa} </h3>
         </section>
-    )
+    );
 }
 export default StudentResults;
+
+//../../Components/UseContext
