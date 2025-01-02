@@ -8,6 +8,7 @@ import About from './Components/About'
 import { Link } from 'react-router-dom';
 import UseRef from './Components/UseRef.jsx'
 import UseContext from './Components/USeContext.jsx'
+import Footer from './Components/Footer.jsx'
 function App() {
   return (
     <div>
@@ -16,12 +17,13 @@ function App() {
       <NavBar />
         <Routes>
             <Route path='/' element={<Home />}></Route>
-            <Route path='/about' element={<About />}></Route>
+            <Route path='/about' element={<About college="KEC" clg1="IT" />}></Route>
             <Route path='/counter' element={<Counter />}></Route>
             <Route path='/use-ref' element={<UseRef />}></Route>
             <Route path='/use-context' element={<UseContext />}></Route>
 
         </Routes>
+        <center><Footer /></center>
       </BrowserRouter>
       
       

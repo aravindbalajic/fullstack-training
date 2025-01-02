@@ -1,9 +1,16 @@
-import React from 'react';
+import 'react';
 const Home=()=>{
+    var styling={
+        fontsize:"30px",
+        textDecoration:"underline",
+        color:"brown"
+    }
     return(
-        <div>
-            <center><p>This is Home Page</p></center>
+        <div className="box-model"> <center>
+            <h2 id="idSEg">Fullstack Training </h2>
+            <p style={{color:"grey"}}>Day 4</p>
+            <p style={styling}>React</p></center>
         </div>
-    )
+    );
 }
 export default Home;
