@@ -1,4 +1,4 @@
-ul{
+/* ul{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -28,4 +28,40 @@ Link:hover{
 
 li{
     padding: 10px;
+} */
+
+ul {
+    display: flex;
+    list-style-type: none;
+    justify-content: space-evenly;
+    padding: 20px;
+    margin: 0;
+    background-color: rgb(13, 126, 231);
+}
+
+li {
+    cursor: pointer;
+    padding: 3px;
+    color: white;
+}
+
+li:hover {
+    color: black;
+    background-color: white;
+    border-radius: 2px;
+}
+
+.Header {
+    position: sticky;
+
+}
+
+ul li a {
+    text-decoration: none; 
+    color: inherit;
+
+}
+
+ul li a:hover {
+    color: inherit;
 }
