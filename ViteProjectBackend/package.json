@@ -10,8 +10,10 @@
   "author": "",
   "license": "ISC",
   "description": "",
-  "dependencies": {
+  "dependencies": { 
     "express": "^4.21.2",
-    "nodemon": "^3.1.9"
+    "mongoose": "^8.9.3",
+    "nodemon": "^3.1.9",
+    "path": "^0.12.7"
   }
 }
