@@ -1,62 +1,123 @@
-var express = require('express')
-var path = require('path')
-var mdb = require('mongoose')
-var User = require('./models/users')
+const express = require('express');
+const path = require('path');
+const mdb = require('mongoose');
+const User = require('./models/users');
 
-var app = express()
+const app = express();
 const PORT = 3001;
 
-app.use(express.json())
+app.use(express.json());
 
-mdb.connect("mongodb://localhost:27017/KEC").then(() => {//  mongodb://127.0.0.1:27017 Both are same.
-    console.log("MongoDB Connection Successful")
-}).catch(() => {
-    console.log("Check your Connection String")
-})
+// Connect to MongoDB
+mdb.connect("mongodb://localhost:27017/KEC")
+    .then(() => {
+        console.log("MongoDB Connection Successful");
+    })
+    .catch((err) => {
+        console.error("Check your Connection String:", err);
+    });
 
+// Serve static files
 app.get('/', (req, res) => {
-    res.send("Welcome to Backend Server")
-})
+    res.send("Welcome to Backend Server");
+});
 
 app.get('/json', (req, res) => {
-    res.json("Welcome to Backend Server")
-})
+    res.json("Welcome to Backend Server");
+});
 
 app.get('/static', (req, res) => {
-    console.log(__dirname)//prints pathname
-    res.sendFile(path.join(__dirname, 'index.html'))
+    console.log(__dirname);
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Serve Signin page
+app.get('/signin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Signin.html'));
+});
+
+app.get('/signup',(req,res)=>{
+    res.sendFile(path.join(__dirname,'Signup.html'))
 })
 
-app.post('/signup', (req, res) => {
-    console.log(req.body)
-    var { firstName, lastName, email } = req.body //since destructing is done from body curly brackets are used instaed of square brackets.
-    console.log(firstName, lastName, email);
+// Signup route
+app.post('/signup', async (req, res) => {
+    const { firstName, lastName, email, password } = req.body;
     try {
-        var newUser = new User({
-            firstName: firstName,
-            lastName: lastName,
-            email: email
-        })
-        newUser.save();
-        console.log("User added successfully")
-        res.status(200).send("User Added Successfully")
-    }
-    catch (err) {
-        console.log(err)
-    }
-})
+        const newUser = new User({
+            firstName:firstName,
+            lastName:lastName,
+            email:email,
+            password:password
+        });
 
-app.get('/getsignup',(req,res)=>{
+        
+            await newUser.save();
+            console.log("User added successfully");
+            res.status(200).send("User Added Successfully");
+            
+        
+        
+    } catch (err) {
+        console.error("Error during signup:", err);
+        res.status(500).send("Error Adding User");
+    }
+});
+////////////////////////////////////////////////////////////////////
+// Signin route
+app.post('/signin', async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const existingUser = await User.findOne({ email });
+        if (!existingUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        if (existingUser.password!==password) {
+            return res.status(401).json({ message: "Invalid password" });
+        }
+
+        res.status(200).json({ message: "Login Successful", isLoggedIn: true });
+    } catch (err) {
+        console.error("Login failed:", err);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+//////////////////////////////////////////////////////////////////////////////////
+// Fetch all signup records
+app.get('/getsignup', async (req, res) => {
+    try {
+        const allSignUpRecords =  await User.find();
+        res.json(allSignUpRecords);
+        console.log("All Data Fetched");
+    } catch (err) {
+        console.error("Unable to read the Record:", err);
+        res.status(500).send("Error Fetching Records");
+    }
+});
+
+app.get('/login',async (req,res)=>{
+    res.sendFile(path.join(__dirname, 'Signin.html'))
+    //var {email,password}=req.body
     try{
-        var allSignUpRecords=User.find()
-        res.json(allSignUpRecords)
-        console.log("All Data Fetched")
-    }
-    catch(err){
-        console.log("Cant able to read the Record")
-    }
+        var existingUser = await User.findOne({email:email})
+        console.log(existingUser)
+        res.json({message:"Login Successful,isLoggedIn:true"})
+        
+        
+    }    
+    catch(e){
+        console.log(e)
+    }   
 })
 
-app.listen(PORT, () => {//Always use this anonymous Function
-    console.log("Backend Server Started running on port " + PORT);
+app.get('/delete',async (req,res)=>{
+    var {email}=req.body
+    var deletingaccount = await User.deleteOne({email})
+    console.log("Account Deleted")
+    res.send("acc deleted")
 })
+
+// Start the server
+app.listen(PORT, () => {
+    console.log("Backend Server Started running on port " + PORT);
+});
