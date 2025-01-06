@@ -7,6 +7,8 @@ const app = express();
 const PORT = 3001;
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 
 // Connect to MongoDB
 mdb.connect("mongodb://localhost:27017/KEC")
@@ -36,26 +38,37 @@ app.get('/signin', (req, res) => {
     res.sendFile(path.join(__dirname, 'Signin.html'));
 });
 
+// Serve Signup page
 app.get('/signup',(req,res)=>{
     res.sendFile(path.join(__dirname,'Signup.html'))
+})
+
+//Update Page Serving
+app.get('/update',(req,res)=>{
+    res.sendFile(path.join(__dirname,'Update.html'))
 })
 
 // Signup route
 app.post('/signup', async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
     try {
-        const newUser = new User({
-            firstName:firstName,
-            lastName:lastName,
-            email:email,
-            password:password
-        });
-
-        
+        const existingUser = await User.findOne({ email: email });
+        if (existingUser) {
+            // If user is found, respond with a message
+            return res.status(400).send("User already present");
+        }
+        else{
+            const newUser = new User({
+                firstName:firstName,
+                lastName:lastName,
+                email:email,
+                password:password
+            });
+    
             await newUser.save();
             console.log("User added successfully");
             res.status(200).send("User Added Successfully");
-            
+        }
         
         
     } catch (err) {
@@ -63,26 +76,35 @@ app.post('/signup', async (req, res) => {
         res.status(500).send("Error Adding User");
     }
 });
-////////////////////////////////////////////////////////////////////
-// Signin route
-app.post('/signin', async (req, res) => {
-    const { email, password } = req.body;
-    try {
-        const existingUser = await User.findOne({ email });
-        if (!existingUser) {
-            return res.status(404).json({ message: "User not found" });
-        }
-        if (existingUser.password!==password) {
-            return res.status(401).json({ message: "Invalid password" });
-        }
 
-        res.status(200).json({ message: "Login Successful", isLoggedIn: true });
-    } catch (err) {
-        console.error("Login failed:", err);
-        res.status(500).json({ message: "Internal Server Error" });
+//Sigin Route
+app.post('/signin',async (req,res)=>{
+    try{
+        const {email,password}=req.body;
+        const existing=await User.findOne({email:email})
+        console.log(existing)
+        if(existing){
+            if(existing.password===password){
+                console.log("Login Successful")
+                return res.send("User Login is Successful");
+            }
+            else{
+                console.log("Login Invalid")
+                return res.send("Enter a Valid Password");
+            }
+            
+        }
+        else{
+            console.log("Login Invalid ")
+            return res.send("User not found")
+        }
     }
-});
-//////////////////////////////////////////////////////////////////////////////////
+    catch(e){
+        console.error("Error during signin:", err);
+        res.send("An error occurred during signin");
+    }
+})
+
 // Fetch all signup records
 app.get('/getsignup', async (req, res) => {
     try {
@@ -95,26 +117,32 @@ app.get('/getsignup', async (req, res) => {
     }
 });
 
-app.get('/login',async (req,res)=>{
-    res.sendFile(path.join(__dirname, 'Signin.html'))
-    //var {email,password}=req.body
-    try{
-        var existingUser = await User.findOne({email:email})
-        console.log(existingUser)
-        res.json({message:"Login Successful,isLoggedIn:true"})
-        
-        
-    }    
-    catch(e){
-        console.log(e)
-    }   
-})
-
+//Deleting a record
 app.get('/delete',async (req,res)=>{
     var {email}=req.body
     var deletingaccount = await User.deleteOne({email})
     console.log("Account Deleted")
     res.send("acc deleted")
+})
+
+app.post('/update',async (req,res)=>{
+    try{
+        var {email,fname,lname,password}=req.body;
+        const exists = await User.findOne({email:email})
+        if(exists){
+            await User.updateOne({email:email},{$set:{firstName:fname,lastName:lname,password:password}})
+            console.log("User Updated")
+            res.send("Changes Done")
+        }
+        else{
+            console.log("User Not found")
+            res.send("Invalid User")
+        }
+    }
+    catch(e){
+        console.error(e);
+    }
+    
 })
 
 // Start the server
