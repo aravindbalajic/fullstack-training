@@ -48,6 +48,11 @@ app.get('/update',(req,res)=>{
     res.sendFile(path.join(__dirname,'Update.html'))
 })
 
+//Deletion Page Serving
+app.get('/delete',(req,res)=>{
+    res.sendFile(path.join(__dirname,'Delete.html'))
+})
+
 // Signup route
 app.post('/signup', async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
@@ -118,11 +123,27 @@ app.get('/getsignup', async (req, res) => {
 });
 
 //Deleting a record
-app.get('/delete',async (req,res)=>{
-    var {email}=req.body
-    var deletingaccount = await User.deleteOne({email})
-    console.log("Account Deleted")
-    res.send("acc deleted")
+app.post('/delete',async (req,res)=>{
+    try{
+        var {email,password}=req.body
+        var existing = await User.findOne({email:email})
+        if(existing){
+            if(existing.password===password){
+                var deletingaccount = await User.deleteOne({email})
+                console.log("Account Deleted")
+                res.send("acc deleted")
+            }
+            else{
+                console.log("Password Incorect")
+                res.send("Invalid Access")
+            }
+        }
+        
+    }
+    catch(e){
+        console.error(e);
+    }
+    
 })
 
 app.post('/update',async (req,res)=>{
@@ -147,5 +168,5 @@ app.post('/update',async (req,res)=>{
 
 // Start the server
 app.listen(PORT, () => {
-    console.log("Backend Server Started running on port " + PORT);
+    console.log('Backend Server Started\nUrl:http://localhost:'+PORT);
 });
