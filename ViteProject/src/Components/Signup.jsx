@@ -19,7 +19,7 @@ const Signup = () => {
       console.log("Sign-Up Successful:", response.data);
       alert("Sign-Up Successful");
       navigate("/login");
-    } catch (error) {
+    } catch (error) {~
       console.error("Sign-Up Error:", error);
       alert("An error occurred during sign-up.");
     }
@@ -101,5 +101,5 @@ const Signup = () => {
     </div>
   );
 };
-
+ 
 export default Signup;
