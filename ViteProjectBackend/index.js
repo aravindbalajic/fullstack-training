@@ -2,13 +2,15 @@ const express = require('express');
 const path = require('path');
 const mdb = require('mongoose');
 const User = require('./models/users');
+const cors=require('cors')
+const env=require('dotenv')//used for  atlas
 
 const app = express();
 const PORT = 3001;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(cors())//cors used to connect frontend and backend
 
 // Connect to MongoDB
 mdb.connect("mongodb://localhost:27017/KEC")
@@ -91,17 +93,17 @@ app.post('/signin',async (req,res)=>{
         if(existing){
             if(existing.password===password){
                 console.log("Login Successful")
-                return res.send("User Login is Successful");
+                res.json({message:"User Login is Successful",loggedIn:true});
             }
             else{
                 console.log("Login Invalid")
-                return res.send("Enter a Valid Password");
+                 res.json({message:"Enter a Valid Password",loggedIn:false});
             }
             
         }
         else{
             console.log("Login Invalid ")
-            return res.send("User not found")
+            res.json({message:"User not found",loggedIn:false})
         }
     }
     catch(e){
